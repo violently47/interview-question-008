@@ -1,0 +1,25 @@
+@Example.Com.ExamManagement.Api_HostAddress = http://localhost:5172
+
+### IT 08-1 — รายการข้อสอบทั้งหมด
+GET {{Example.Com.ExamManagement.Api_HostAddress}}/api/exams
+Accept: application/json
+
+### IT 08-2 — เพิ่มข้อสอบ
+POST {{Example.Com.ExamManagement.Api_HostAddress}}/api/exams
+Content-Type: application/json
+
+{
+  "question": "1 + 1 เท่ากับเท่าไร?",
+  "optionA": "1",
+  "optionB": "2",
+  "optionC": "3",
+  "optionD": "4",
+  "correctAnswer": "B"
+}
+
+### ดึงข้อสอบตาม Id
+GET {{Example.Com.ExamManagement.Api_HostAddress}}/api/exams/1
+Accept: application/json
+
+### IT 08-1 — ลบข้อสอบ (Running Number จะถูกจัดใหม่)
+DELETE {{Example.Com.ExamManagement.Api_HostAddress}}/api/exams/1

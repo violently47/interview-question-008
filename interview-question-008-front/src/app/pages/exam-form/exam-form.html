@@ -1,0 +1,83 @@
+<mat-toolbar color="primary" class="page-toolbar">
+  <span class="toolbar-title">IT 08-2</span>
+</mat-toolbar>
+
+<div class="page-container">
+  <mat-card class="form-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>เพิ่มข้อสอบ</mat-card-title>
+      <mat-card-subtitle>กรอกข้อมูลข้อสอบและตัวเลือกคำตอบ</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" class="exam-form" (ngSubmit)="onSave()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>คำถาม</mat-label>
+          <textarea
+            matInput
+            formControlName="question"
+            rows="3"
+            placeholder="เช่น ข้อใดต่างจากข้ออื่น"
+          ></textarea>
+          @if (form.controls.question.hasError('required') && form.controls.question.touched) {
+            <mat-error>กรุณากรอกคำถาม</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="options-section">
+          <h3>ตัวเลือกคำตอบ</h3>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>ตัวเลือก A</mat-label>
+            <input matInput formControlName="optionA" placeholder="เช่น 3" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>ตัวเลือก B</mat-label>
+            <input matInput formControlName="optionB" placeholder="เช่น 5" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>ตัวเลือก C</mat-label>
+            <input matInput formControlName="optionC" placeholder="เช่น 9" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>ตัวเลือก D</mat-label>
+            <input matInput formControlName="optionD" placeholder="เช่น 11" />
+          </mat-form-field>
+        </div>
+
+        <div class="answer-section">
+          <h3>เฉลย</h3>
+          <mat-radio-group formControlName="correctAnswer" class="answer-group">
+            <mat-radio-button value="A">A</mat-radio-button>
+            <mat-radio-button value="B">B</mat-radio-button>
+            <mat-radio-button value="C">C</mat-radio-button>
+            <mat-radio-button value="D">D</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end" class="form-actions">
+      <button mat-button type="button" (click)="onCancel()" [disabled]="saving()">
+        ยกเลิก
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="onSave()"
+        [disabled]="saving()"
+      >
+        @if (saving()) {
+          <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+        } @else {
+          <mat-icon>save</mat-icon>
+        }
+        บันทึก
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

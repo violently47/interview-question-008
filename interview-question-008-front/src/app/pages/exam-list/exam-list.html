@@ -1,0 +1,84 @@
+<mat-toolbar color="primary" class="page-toolbar">
+  <span class="toolbar-title">IT 08-1</span>
+</mat-toolbar>
+
+<div class="page-container">
+  <div class="page-header">
+    <button mat-flat-button color="primary" class="add-button" (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+      เพิ่มข้อสอบ
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="state-panel">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>กำลังโหลดข้อสอบ...</p>
+    </div>
+  } @else if (error()) {
+    <mat-card class="state-card error-card">
+      <mat-card-content>
+        <mat-icon color="warn">error_outline</mat-icon>
+        <p>{{ error() }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (exams().length === 0) {
+    <mat-card class="state-card empty-card">
+      <mat-card-content>
+        <mat-icon>quiz</mat-icon>
+        <h3>ยังไม่มีข้อสอบ</h3>
+        <p>กดปุ่ม "เพิ่มข้อสอบ" เพื่อสร้างข้อสอบแรกของคุณ</p>
+        <button mat-flat-button color="primary" (click)="onAdd()">เพิ่มข้อสอบ</button>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="exam-list">
+      @for (exam of exams(); track exam.id) {
+        <mat-card class="exam-card" appearance="outlined">
+          <mat-card-header>
+            <div class="exam-header">
+              <mat-card-title>{{ exam.number }}. {{ exam.question }}</mat-card-title>
+              <button
+                mat-stroked-button
+                color="warn"
+                class="delete-button"
+                (click)="onDelete(exam)"
+              >
+                <mat-icon>delete</mat-icon>
+                ลบ
+              </button>
+            </div>
+          </mat-card-header>
+
+          @if (getOptions(exam).length > 0) {
+            <mat-card-content>
+              <mat-radio-group
+                class="options-group"
+                [value]="getSelectedAnswer(exam.id)"
+                (change)="onAnswerSelect(exam, $event.value)"
+              >
+                @for (option of getOptions(exam); track option.key) {
+                  <mat-radio-button class="option-item" [value]="option.key">
+                    {{ option.value }}
+                  </mat-radio-button>
+                }
+              </mat-radio-group>
+
+              @if (getAnswerFeedback(exam.id) === 'correct') {
+                <p class="answer-feedback answer-feedback--correct">
+                  <mat-icon>check_circle</mat-icon>
+                  ถูกต้อง!
+                </p>
+              } @else if (getAnswerFeedback(exam.id) === 'incorrect') {
+                <p class="answer-feedback answer-feedback--incorrect">
+                  <mat-icon>cancel</mat-icon>
+                  ยังไม่ถูก ลองใหม่อีกครั้ง
+                </p>
+              }
+            </mat-card-content>
+          }
+        </mat-card>
+      }
+    </div>
+  }
+</div>
